@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>CodeNames SpyMaster</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" type="text/css" href="master.css">
+	<script src="jquery-3.4.1.min.js"></script>
+	<script src="word-list.js"></script>
+	<script>
+		$(document).ready(function(){
+			let games;
+			let current;
+			let number = ("00" + (Math.floor(Math.random() * 20) + 1)).slice(-2);
+			let file = "games-" + number + ".json";
+
+			$.ajax({
+			  	dataType: "text",
+				contentType: "text/plain",
+			  	url: file,
+			  	success: function(data) { 
+			  		games = JSON.parse(data); 
+			  		current = games[Math.floor(Math.random() * games.length)];
+			  		display(); 
+			  	}
+			});
+
+			function display() {
+				let cls;
+				let word;
+				for(let i=0; i<25; ++i) {
+					cls = "bystander";
+					if (current.p1.includes(i)) {
+						cls = "p1";
+					}
+					if (current.p2.includes(i)) {
+						cls = "p2";
+					}
+					if (current.end == i) {
+						cls = "end";
+					}
+					word = words[current.grid[i]];
+					$("#grid-" + i).html(word);
+					$("#grid-" + i).addClass(cls);
+				}
+				$("#game-id").html("Game: " + number + "-" + current.game);
+			}
+
+		});
+
+	</script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="game-id"></div>
+	<table id="gameboard">
+		<tr>
+			<td class="card" id="grid-0"></td>
+			<td class="card" id="grid-1"></td>
+			<td class="card" id="grid-2"></td>
+			<td class="card" id="grid-3"></td>
+			<td class="card" id="grid-4"></td>
+		</tr>
+		<tr>
+			<td class="card" id="grid-5"></td>
+			<td class="card" id="grid-6"></td>
+			<td class="card" id="grid-7"></td>
+			<td class="card" id="grid-8"></td>
+			<td class="card" id="grid-9"></td>
+		</tr>
+		<tr>
+			<td class="card" id="grid-10"></td>
+			<td class="card" id="grid-11"></td>
+			<td class="card" id="grid-12"></td>
+			<td class="card" id="grid-13"></td>
+			<td class="card" id="grid-14"></td>
+		</tr>
+		<tr>
+			<td class="card" id="grid-15"></td>
+			<td class="card" id="grid-16"></td>
+			<td class="card" id="grid-17"></td>
+			<td class="card" id="grid-18"></td>
+			<td class="card" id="grid-19"></td>
+		</tr>
+		<tr>
+			<td class="card" id="grid-20"></td>
+			<td class="card" id="grid-21"></td>
+			<td class="card" id="grid-22"></td>
+			<td class="card" id="grid-23"></td>
+			<td class="card" id="grid-24"></td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

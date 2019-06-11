@@ -1,0 +1,50 @@
+html, body {
+	font-family: 'Roboto', sans-serif;
+}
+#game-id {
+	font-size: 25px;
+}
+#wrapper {
+	width: 100%;
+	text-align:center;
+}
+table {
+	border-collapse: collapse;
+	border: none;
+}
+#gameboard {
+	margin: 10px auto;
+}
+.card {
+	width: 150px;
+	height: 100px;
+	text-align: center;
+	border: 2px solid black;
+}
+.p1 {
+	color: white;
+	background-color: #B82B19;
+}
+.p2 {
+	color: white;
+	background-color: #144A76;
+}
+.bystander {
+	color: #333;
+	background-color: #C8BBAA;
+}
+.end {
+	color: white;
+	background-color: #212121;
+}
+#play-id {
+	height: 30px;
+	width: 120px;
+	font-size: 25px;
+	text-transform: uppercase;
+}
+.board {
+	color: #333 !important;
+	background-color: #FFF !important;
+}
+

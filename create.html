@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CodeNames Game Creator</title>
+
+<script src="word-list.js"></script>
+
+</head>
+<body>
+
+<textarea cols=200 rows=40 id="games"></textarea>
+
+
+<script>
+	let ids = [];
+    let list = [];
+    let json, game, grid, p1, p2, end, tmp;
+
+    for(let cnt=0; cnt<1000; ++cnt) {
+        game = ""; grid = []; p1 = []; p2 = [];
+        do { game = ""; for(let i=0; i<4; ++i) { game += String.fromCharCode(Math.floor(Math.random()*26) + 65); } } while (ids.includes(game));
+        for(let i=0; i<9; ++i) {
+            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
+            p1[i] = tmp;
+            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
+            p2[i] = tmp;
+        }
+        for(let i=0; i<25; ++i) {
+            do { tmp = Math.floor(Math.random()*words.length); } while(grid.includes(tmp));
+            grid[i] = tmp;
+        }
+        end = p2.pop();
+        list.push({game, grid, p1, p2, end});
+    }
+    json = JSON.stringify(list);
+    document.getElementById("games").value = json;
+    
+</script>
+
+</body>
+</html>
