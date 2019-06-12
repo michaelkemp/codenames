@@ -1,5 +1,6 @@
 html, body {
 	font-family: 'Roboto', sans-serif;
+	background-color: white;
 }
 #game-id {
 	font-size: 25px;
@@ -12,30 +13,29 @@ table {
 	border-collapse: collapse;
 	border: none;
 }
-#gameboard {
-	margin: 10px auto;
-}
 .card {
 	width: 150px;
 	height: 100px;
 	text-align: center;
 	border: 2px solid black;
+	font-weight:bold;
+	font-size: 18px;
 }
 .p1 {
 	color: white;
-	background-color: #B82B19;
+	background-color: #B22222;
 }
 .p2 {
 	color: white;
-	background-color: #144A76;
+	background-color: #36648B;
 }
 .bystander {
 	color: #333;
-	background-color: #C8BBAA;
+	background-color: #FFE4C4;
 }
 .end {
 	color: white;
-	background-color: #212121;
+	background-color: #000;
 }
 #play-id {
 	height: 30px;
@@ -47,4 +47,23 @@ table {
 	color: #333 !important;
 	background-color: #FFF !important;
 }
-
+#gameboarder {
+	display: table;
+	border: 2px solid black;
+	padding: 10px;
+	margin:10px auto;
+}
+.selected {
+	filter: brightness(40%);
+}
+#scoreboard {
+	margin:10px auto;
+}
+.score {
+	color: white;
+	width: 70px;
+	height: 40px;
+	font-weight:bold;
+	font-size: 20px;	
+	border: 2px solid black;
+}

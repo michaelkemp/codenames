@@ -8,33 +8,64 @@
 </head>
 <body>
 
-<textarea cols=200 rows=40 id="games"></textarea>
-
+<form onsubmit="download(this['name'].value, this['json'].value)">
+	<input type="text" name="name" id="name" value="games-00.json"><br>
+	<textarea name="json" cols=200 rows=40 id="games"></textarea><br>
+	<input type="submit" value="Download">
+</form>
 
 <script>
-	let ids = [];
-    let list = [];
-    let json, game, grid, p1, p2, end, tmp;
 
-    for(let cnt=0; cnt<1000; ++cnt) {
-        game = ""; grid = []; p1 = []; p2 = [];
-        do { game = ""; for(let i=0; i<4; ++i) { game += String.fromCharCode(Math.floor(Math.random()*26) + 65); } } while (ids.includes(game));
-        for(let i=0; i<9; ++i) {
-            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
-            p1[i] = tmp;
-            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
-            p2[i] = tmp;
-        }
-        for(let i=0; i<25; ++i) {
-            do { tmp = Math.floor(Math.random()*words.length); } while(grid.includes(tmp));
-            grid[i] = tmp;
-        }
-        end = p2.pop();
-        list.push({game, grid, p1, p2, end});
-    }
-    json = JSON.stringify(list);
-    document.getElementById("games").value = json;
-    
+	let filenumber = 0;
+
+	function newGame() {
+		let ids = [];
+	    let list = [];
+	    let json, game, grid, p1, p2, end, tmp;
+
+
+	    for(let cnt=0; cnt<1000; ++cnt) {
+	        game = ""; grid = []; p1 = []; p2 = [];
+	        do { game = ""; for(let i=0; i<4; ++i) { game += String.fromCharCode(Math.floor(Math.random()*26) + 65); } } while (ids.includes(game));
+	        for(let i=0; i<9; ++i) {
+	            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
+	            p1[i] = tmp;
+	            do { tmp = Math.floor(Math.random()*25); } while(p1.includes(tmp) || p2.includes(tmp));
+	            p2[i] = tmp;
+	        }
+	        for(let i=0; i<25; ++i) {
+	            do { tmp = Math.floor(Math.random()*words.length); } while(grid.includes(tmp));
+	            grid[i] = tmp;
+	        }
+	        if (Math.random() > 0.5) {
+	        	end = p1.pop();
+	        } else {
+	        	end = p2.pop();
+	        }
+	        list.push({game, grid, p1, p2, end});
+	    }
+	    json = JSON.stringify(list);
+	    document.getElementById("games").value = json;
+	}
+
+	function download(filename, text) {
+		let element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		element.setAttribute('download', filename);
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+		document.body.removeChild(element);
+
+		++filenumber;
+		document.getElementById("name").value = "games-" + ("0" + filenumber).slice(-2) + ".json";
+		newGame();
+
+	}
+
+    newGame();
 </script>
 
 </body>

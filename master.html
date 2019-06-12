@@ -11,7 +11,7 @@
 		$(document).ready(function(){
 			let games;
 			let current;
-			let number = ("00" + (Math.floor(Math.random() * 20) + 1)).slice(-2);
+			let number = ("00" + (Math.floor(Math.random() * 20))).slice(-2);
 			let file = "games-" + number + ".json";
 
 			$.ajax({
@@ -42,9 +42,18 @@
 					word = words[current.grid[i]];
 					$("#grid-" + i).html(word);
 					$("#grid-" + i).addClass(cls);
+					if (current.p1.length == 9) {
+						$("#gameboarder").addClass("p1");
+					} else {
+						$("#gameboarder").addClass("p2");
+					}
 				}
 				$("#game-id").html("Game: " + number + "-" + current.game);
 			}
+
+            $(".card").on('click touch', function(){
+                $(this).toggleClass('selected');
+            });
 
 		});
 
@@ -53,43 +62,45 @@
 <body>
 <div id="wrapper">
 	<div id="game-id"></div>
-	<table id="gameboard">
-		<tr>
-			<td class="card" id="grid-0"></td>
-			<td class="card" id="grid-1"></td>
-			<td class="card" id="grid-2"></td>
-			<td class="card" id="grid-3"></td>
-			<td class="card" id="grid-4"></td>
-		</tr>
-		<tr>
-			<td class="card" id="grid-5"></td>
-			<td class="card" id="grid-6"></td>
-			<td class="card" id="grid-7"></td>
-			<td class="card" id="grid-8"></td>
-			<td class="card" id="grid-9"></td>
-		</tr>
-		<tr>
-			<td class="card" id="grid-10"></td>
-			<td class="card" id="grid-11"></td>
-			<td class="card" id="grid-12"></td>
-			<td class="card" id="grid-13"></td>
-			<td class="card" id="grid-14"></td>
-		</tr>
-		<tr>
-			<td class="card" id="grid-15"></td>
-			<td class="card" id="grid-16"></td>
-			<td class="card" id="grid-17"></td>
-			<td class="card" id="grid-18"></td>
-			<td class="card" id="grid-19"></td>
-		</tr>
-		<tr>
-			<td class="card" id="grid-20"></td>
-			<td class="card" id="grid-21"></td>
-			<td class="card" id="grid-22"></td>
-			<td class="card" id="grid-23"></td>
-			<td class="card" id="grid-24"></td>
-		</tr>
-	</table>
+	<div id="gameboarder">
+		<table id="gameboard">
+			<tr>
+				<td class="card" id="grid-0"></td>
+				<td class="card" id="grid-1"></td>
+				<td class="card" id="grid-2"></td>
+				<td class="card" id="grid-3"></td>
+				<td class="card" id="grid-4"></td>
+			</tr>
+			<tr>
+				<td class="card" id="grid-5"></td>
+				<td class="card" id="grid-6"></td>
+				<td class="card" id="grid-7"></td>
+				<td class="card" id="grid-8"></td>
+				<td class="card" id="grid-9"></td>
+			</tr>
+			<tr>
+				<td class="card" id="grid-10"></td>
+				<td class="card" id="grid-11"></td>
+				<td class="card" id="grid-12"></td>
+				<td class="card" id="grid-13"></td>
+				<td class="card" id="grid-14"></td>
+			</tr>
+			<tr>
+				<td class="card" id="grid-15"></td>
+				<td class="card" id="grid-16"></td>
+				<td class="card" id="grid-17"></td>
+				<td class="card" id="grid-18"></td>
+				<td class="card" id="grid-19"></td>
+			</tr>
+			<tr>
+				<td class="card" id="grid-20"></td>
+				<td class="card" id="grid-21"></td>
+				<td class="card" id="grid-22"></td>
+				<td class="card" id="grid-23"></td>
+				<td class="card" id="grid-24"></td>
+			</tr>
+		</table>
+	</div>
 </div>
 </body>
 </html>
