@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>CodeNames SpyMaster</title>
+	<title>CodeNames Spy Master</title>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
 	<link rel="stylesheet" type="text/css" href="master.css">
 	<script src="jquery-3.4.1.min.js"></script>
@@ -11,7 +11,7 @@
 		$(document).ready(function(){
 			let games;
 			let current;
-			let number = ("00" + (Math.floor(Math.random() * 20))).slice(-2);
+			let number = ("00" + (Math.floor(Math.random() * 50))).slice(-2);
 			let file = "games-" + number + ".json";
 
 			$.ajax({

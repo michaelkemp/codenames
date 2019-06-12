@@ -13,6 +13,7 @@
             let current;
             let file;
             let endgame = false;
+            let cells = [];
 
             function clear() {
                 for(let i=0; i<25; ++i) {
@@ -26,19 +27,20 @@
                 let cls;
                 let word;
                 for(let i=0; i<25; ++i) {
-                    cls = "board bystander";
-                    if (current.p1.includes(i)) {
-                        cls = "board p1";
-                    }
-                    if (current.p2.includes(i)) {
-                        cls = "board p2";
-                    }
-                    if (current.end == i) {
-                        cls = "board end";
-                    }
-                    word = words[current.grid[i]];
+					cls = "bystander";
+					if (current.p1.includes(i)) {
+						cls = "p1";
+					}
+					if (current.p2.includes(i)) {
+						cls = "p2";
+					}
+					if (current.end == i) {
+						cls = "end";
+					}
+					cells[i] = cls;
+                	word = words[current.grid[i]];
                     $("#grid-" + i).html(word);
-                    $("#grid-" + i).addClass(cls);
+                    $("#grid-" + i).data("cell", i);
                 }
                 $("#p1-score").html("0/"+current.p1.length);
                 $("#p2-score").html("0/"+current.p2.length);
@@ -81,11 +83,14 @@
 
             $(".card").on('click touch', function(){
                 if (!endgame) {
-                    $(this).removeClass('board');
                     let p1 = 0;
                     let p2 = 0;
                     let bystander = 0;
                     let end = 0;
+
+                	let cell = $(this).data("cell");
+                    $(this).addClass(cells[cell]);
+
                     $(".card").each(function(index) {
                         p1 +=           ($(this).hasClass("p1")         && !$(this).hasClass("board")) ? 1 : 0;
                         p2 +=           ($(this).hasClass("p2")         && !$(this).hasClass("board")) ? 1 : 0;
@@ -96,13 +101,16 @@
                     $("#p2-score").html(p2+"/"+current.p2.length);
                     if (end > 0) {
                         endgame = true;
-                        $("html, body").addClass("end");
+                        $("#wrapper").addClass("end");
+                        $("#gameboarder").css({"background-color":"white","color":"black"});
                     } else if (p1 == current.p1.length) {
                         endgame = true;
-                        $("html, body").addClass("p1");
+                        $("#wrapper").addClass("p1");
+                        $("#gameboarder").css({"background-color":"white","color":"black"});
                     } else if (p2 == current.p2.length) {
                         endgame = true;
-                        $("html, body").addClass("p2");
+                        $("#wrapper").addClass("p2");
+                        $("#gameboarder").css({"background-color":"white","color":"black"});
                     }
                 }
             });
@@ -161,7 +169,6 @@
             <td class="score p1" id="p1-score"></td>
             <td>&nbsp;&nbsp;&nbsp;</td>
             <td class="score p2" id="p2-score"></td>
-            <td></td><td></td>
         </tr>
     </table>
 
