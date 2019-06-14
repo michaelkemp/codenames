@@ -63,9 +63,6 @@ table {
 	padding: 10px;
 	margin:10px auto;
 }
-.selected {
-	filter: brightness(40%);
-}
 #scoreboard {
 	margin:10px auto;
 }
@@ -76,4 +73,7 @@ table {
 	font-weight:bold;
 	font-size: 20px;	
 	border: 2px solid black;
+}
+.selected {
+	filter: brightness(20%);
 }

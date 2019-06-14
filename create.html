@@ -8,9 +8,11 @@
 </head>
 <body>
 
-<form onsubmit="download(this['name'].value, this['json'].value)">
-	<input type="text" name="name" id="name" value="games-00.json"><br>
-	<textarea name="json" cols=200 rows=40 id="games"></textarea><br>
+<form onsubmit="return download(this['fileGames'].value, this['jsonGames'].value, this['fileStates'].value, this['jsonStates'].value)">
+	<input type="text" name="fileGames" id="fileGames" value="games-00.json"><br>
+	<input type="text" name="fileStates" id="fileStates" value="states-00.json"><br>
+	<textarea name="jsonGames" cols=100 rows=10 id="games"></textarea><br>
+	<textarea name="jsonStates" cols=100 rows=10 id="states"></textarea><br>
 	<input type="submit" value="Download">
 </form>
 
@@ -20,8 +22,10 @@
 
 	function newGame() {
 		let ids = [];
-	    let list = [];
-	    let json, game, grid, p1, p2, end, tmp;
+	    let games = [];
+	    let states = [];
+	    let state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	    let jsonGames, jsonStates, game, grid, p1, p2, end, tmp;
 
 
 	    for(let cnt=0; cnt<1000; ++cnt) {
@@ -42,26 +46,37 @@
 	        } else {
 	        	end = p2.pop();
 	        }
-	        list.push({game, grid, p1, p2, end});
+	        games.push({game, grid, p1, p2, end});
+	        states.push({game, state});
 	    }
-	    json = JSON.stringify(list);
-	    document.getElementById("games").value = json;
+	    jsonGames = JSON.stringify(games);
+	    jsonStates = JSON.stringify(states);
+	    document.getElementById("games").value = jsonGames;
+	    document.getElementById("states").value = jsonStates;
 	}
 
-	function download(filename, text) {
-		let element = document.createElement('a');
-		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-		element.setAttribute('download', filename);
+	function download(filegames, games, filestates, states) {
+		let element1 = document.createElement('a');
+		element1.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(games));
+		element1.setAttribute('download', filegames);
+		element1.style.display = 'none';
+		document.body.appendChild(element1);
+		element1.click();
+		document.body.removeChild(element1);
 
-		element.style.display = 'none';
-		document.body.appendChild(element);
-
-		element.click();
-		document.body.removeChild(element);
+		let element2 = document.createElement('a');
+		element2.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(states));
+		element2.setAttribute('download', filestates);
+		element2.style.display = 'none';
+		document.body.appendChild(element2);
+		element2.click();
+		document.body.removeChild(element2);
 
 		++filenumber;
-		document.getElementById("name").value = "games-" + ("0" + filenumber).slice(-2) + ".json";
+		document.getElementById("fileGames").value  = "games-" + ("0" + filenumber).slice(-2) + ".json";
+		document.getElementById("fileStates").value = "states-" + ("0" + filenumber).slice(-2) + ".json";
 		newGame();
+		return false;
 
 	}
 

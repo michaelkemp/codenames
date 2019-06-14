@@ -12,7 +12,8 @@
 			let games;
 			let current;
 			let number = ("00" + (Math.floor(Math.random() * 50))).slice(-2);
-			let file = "games-" + number + ".json";
+			let file = "games/games-" + number + ".json";
+			let state = "states/states-" + number + ".json";
 
 			$.ajax({
 			  	dataType: "text",
@@ -51,9 +52,34 @@
 				$("#game-id").html("Game: " + number + "-" + current.game);
 			}
 
-            $(".card").on('click touch', function(){
-                $(this).toggleClass('selected');
-            });
+            function readState() {
+				$.ajax({
+				  	dataType: "text",
+					contentType: "text/plain",
+				  	url: state,
+				  	cache: false,
+				  	success: function(data) { 
+				  		games = JSON.parse(data); 
+				  		for(let i=0;i<games.length;++i) {
+				  			if (games[i].game == current.game) {
+				  				for(j=0;j<games[i].state.length;++j) {
+				  					if (parseInt(games[i].state[j]) == 1) {
+				  						$("#grid-" + j).addClass('selected');
+				  					} else {
+				  						$("#grid-" + j).removeClass('selected');
+				  					}
+				  				}
+				  			}
+				  		}
+				  		setTimeout(readState, 1000);
+				  	},
+				  	error: function (textStatus, errorThrown) {
+                        setTimeout(readState, 1000);
+                    }
+				});
+		
+            }
+            setTimeout(readState, 1000);
 
 		});
 

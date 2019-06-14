@@ -12,15 +12,18 @@
             let games;
             let current;
             let file;
-            let endgame = false;
+            let endgame = true;
+            let state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
             let cells = [];
 
             function clear() {
+                state = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
                 for(let i=0; i<25; ++i) {
                     $("#grid-" + i).html("");
-                    $("#grid-" + i).removeAttr('class');
+                    $("#grid-" + i).removeAttr("class");
                     $("#grid-" + i).addClass("card");
                 }
+                $("#wrapper").removeAttr("class");
             }
 
             function display() {
@@ -44,6 +47,7 @@
                 }
                 $("#p1-score").html("0/"+current.p1.length);
                 $("#p2-score").html("0/"+current.p2.length);
+                writeState(state);
             }
 
             $("#play-id").on('input', function(){
@@ -57,7 +61,7 @@
                     let res = val.split("-");
                     let found = false;
 
-                    file = "games-" + res[0] + ".json"
+                    file = "games/games-" + res[0] + ".json"
                     $.ajax({
                         dataType: "text",
                         contentType: "text/plain",
@@ -68,7 +72,9 @@
                                 if (games[i].game == res[1]) { current = games[i]; found = true;}
                             }
                             if (found) {
+                                clear();
                                 display();
+                                endgame = false;
                             } else {
                                 clear();
                             }
@@ -83,6 +89,7 @@
 
             $(".card").on('click touch', function(){
                 if (!endgame) {
+                    
                     let p1 = 0;
                     let p2 = 0;
                     let bystander = 0;
@@ -91,14 +98,17 @@
                 	let cell = $(this).data("cell");
                     $(this).addClass(cells[cell]);
 
-                    $(".card").each(function(index) {
-                        p1 +=           ($(this).hasClass("p1")         && !$(this).hasClass("board")) ? 1 : 0;
-                        p2 +=           ($(this).hasClass("p2")         && !$(this).hasClass("board")) ? 1 : 0;
-                        bystander +=    ($(this).hasClass("bystander")  && !$(this).hasClass("board")) ? 1 : 0;
-                        end +=          ($(this).hasClass("end")        && !$(this).hasClass("board")) ? 1 : 0;
-                    });
+                    for(let i=0; i<25; ++i) {
+                        state[i] = 0;
+                        if ($("#grid-"+i).hasClass("p1")         && !$("#grid-"+i).hasClass("board")) { state[i] = 1; p1++; }
+                        if ($("#grid-"+i).hasClass("p2")         && !$("#grid-"+i).hasClass("board")) { state[i] = 1; p2++; }
+                        if ($("#grid-"+i).hasClass("bystander")  && !$("#grid-"+i).hasClass("board")) { state[i] = 1; bystander++; }
+                        if ($("#grid-"+i).hasClass("end")        && !$("#grid-"+i).hasClass("board")) { state[i] = 1; end++; }
+                    }
+
                     $("#p1-score").html(p1+"/"+current.p1.length);
                     $("#p2-score").html(p2+"/"+current.p2.length);
+                    
                     if (end > 0) {
                         endgame = true;
                         $("#wrapper").addClass("end");
@@ -112,8 +122,15 @@
                         $("#wrapper").addClass("p2");
                         $("#gameboarder").css({"background-color":"white","color":"black"});
                     }
+                    writeState(state);
+                    
                 }
             });
+
+            function writeState(state) {
+                let game=$("#play-id").val().toUpperCase();
+                $.post( "setstate.php", { game: game, state:JSON.stringify(state) } );
+            }
 
             checkInput();
 
